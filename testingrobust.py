@@ -1,70 +1,107 @@
-import requests
-from rich import print
-#all functions are defined below
-def keyConfig():
-    key = ""
-    key = input("Enter your personal TFL Unified API key (if you have none leave this blank)")
-    if key == "":
-        key = 'd417c07a1df045af8cb5c17bdf9e783f'
-    return key
+from textual.app import App, ComposeResult
+from textual.widgets import (
+    Footer,
+    Header,
+    DataTable,
+    ContentSwitcher,
+    Button,
+    Input,
+    Select,
+)
+
+from textual.containers import Horizontal, Vertical
+
+from linestatuses import (
+    bakerloo,
+    central,
+    circle,
+    district,
+    hammersmith,
+    jubilee,
+    metropolitan,
+    northern,
+    piccadilly,
+    victoria,
+    waterloo
+)
+
+from linestatuses import valid_lines, stationget
+
+valid_lines = [valid_lines.title().replace("-", " & ") for valid_lines in valid_lines]
+valid_lines.sort()
+
+ROWS = [
+    ("Line", "Status"),
+    ("Bakerloo", bakerloo()),
+    ("Central", central()),
+    ("Circle", circle()),
+    ("District", district()),
+    ("Hammersmith & City", hammersmith()),
+    ("Jubilee", jubilee()),
+    ("Metropolitan", metropolitan()),
+    ("Northern", northern()),
+    ("Piccadilly", piccadilly()),
+    ("Victoria", victoria()),
+    ("Waterloo & City", waterloo()),
+]
+
+#THEMES/COLOURS
+good = "#72e090"
+okay = "#ffa742"
+bad = "#f75a52"
+
+class TubeCompanion(App): #create actual app
+    CSS_PATH = "markdownconf.tcss"
+
+#everything below is app stuff
+
+    def compose(self) -> ComposeResult: #widgets within app
+        self.theme = "tokyo-night"
+        yield Header()
 
 
-def stationNaptan():
-    station = ""
-    while station == "":
-        station = input("Enter a station: ").lower()
-        station = station.replace("and", "%20")
-        station = station.replace("&","%20")
-        station = station.replace(" ", "%20")
-        station = station.replace("-", "%20")
-        station = station.strip()
-        stationcheck = requests.get(f"https://api.tfl.gov.uk/StopPoint/Search/{station}")
-        jsondata = stationcheck.json() #actual json recieve
-        stationcheck = jsondata['total']
-        if stationcheck == 0:
-            print("Please enter a valid station, did you spell it correctly?")
-            station = ""
-        else:
-            matches = [
-                m for m in jsondata.get("matches", [])
-                if "tube" in m.get("modes", [])
-            ]
-            naptancode=matches[0]["id"]
-            return naptancode
+        with Horizontal(id="buttons"):
+            yield Button("Line Statuses", id="linestuff")
+            yield Button("Station Info", id="stationstuff")
 
-def lineStatus():
-    while line == ():
-        valid_lines = ["bakerloo", "northern", "piccadilly", "central", "circle", "district", "hammersmith-city",
-                       "jubilee", "metropolitan", "victoria", "waterloo-city"]
-        print("Type 'help' if you want a list of lines.")
-        line = input("Enter a line: ").lower()
-        while "  " in line and "and" not in line and "&" not in line:
-            line = line.replace("  ", " ") #boredom aero made this btw
-        line = line.replace("and", "-")
-        line = line.replace("&", "-")
-        line = line.replace(" ", "") #boredom aero
-        line = line.strip()
-        if line not in valid_lines and line != ("help"):
-            print("Please enter a valid line")
-            line = () #end of input checking
-        elif line == ("help"):
-            for i in valid_lines:
-                print(i.capitalize())
-                line = ()
-    line_get = requests.get(f"https://api.tfl.gov.uk/Line/{line}/Status?app_key={key}") #make initial request
-    jsondata = line_get.json() #actual array (ty boredom)
-    arrayread = jsondata[0] #first thingy in array
-    status = arrayread['lineStatuses'][0]['statusSeverityDescription'].upper()
-    line = line.replace("-"," AND ").upper()
-    print(status, f"On the {line} line")
-naptancode = (stationNaptan())
-print(naptancode)
+        with ContentSwitcher(initial="linestuff"):
+            yield DataTable(id="linestuff", cursor_type='none')
+            with Vertical(id="stationstuff"):
+
+                yield Input(placeholder="Station Name",
+                            tooltip="Find arrivals/departures of Tube stations.",
+                            id="stationsearch",
+                            type="text"
+                            )
+
+                yield Select.from_values(valid_lines)
+                yield Button("Search", id="submitsearch")
+
+        yield Footer()
+
+    def on_select_changed(self, event: Select.Changed) -> None:
+        station = event.value
+        self.log(f"typed {station}")
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        line = event.value
+        self.log(f"picked {line}")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.input.id == "submitsearch":
+            stationget()
+
+    def on_mount(self) -> None:  # create table with data in it or something
+        table = self.query_one(DataTable)
+        table.add_columns(*ROWS[0])
+        table.add_rows(ROWS[1:])
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        self.query_one(ContentSwitcher).current = event.button.id
 
 
 
 
-
-
-
-
-
+if __name__ == "__main__":
+    app = TubeCompanion()
+    app.run()
