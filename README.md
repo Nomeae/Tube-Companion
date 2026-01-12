@@ -15,11 +15,8 @@ Textual. You can find the repository for it` [here](https://github.com/Textualiz
   (where it fetches the data)`
 
 </p>
-
 <h2>To-Do</h2>
 <p>- Allow the line statuses to refresh after a certain time</p>
-<p>- Change line selections according to station</p>
+<p>- Add station searching to find arrivals/departures</p>
 <p>- Serve online???</p>
 <p>- Theming</p>
- 
-`© Transport for London under the OGL 3.0`
