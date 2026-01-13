@@ -15,7 +15,7 @@ Textual. You can find the repository for it` [here](https://github.com/Textualiz
   (where it fetches the data)`
 
 </p>
-<video src="ad.mp4" width="320" height="240" controls></video>
+
 <h2>To-Do</h2>
 <p>- Allow the line statuses to refresh after a certain time</p>
 <p>- Add station searching to find arrivals/departures</p>
