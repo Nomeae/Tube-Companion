@@ -1,3 +1,18 @@
+.good {
+    color: rgb(82, 255, 108);
+    text-style: bold;
+}
+
+.moderate {
+    color: rgb(82, 255, 108);
+    text-style: bold;
+}
+
+.bad {
+    color: rgb(250, 82, 82);
+    text-style: bold;
+}
+
 Screen {
     align: center middle;
     padding: 1;
@@ -18,14 +33,24 @@ ContentSwitcher {
     width: 50;
     margin: 2;
 }
-Select {
+#linesearch {
     width: 50;
     margin: 2;
-    align-horizontal: left;
-    align-vertical: middle;
 }
-Vertical {
-    align-horizontal: center;
-    align-vertical: middle;
+
+#submitsearch {
+    margin: 2;
 }
+#stationstuff_inputs {
+    width: auto;
+    margin: 2;
+}
+
+#arrival_container {
+    width: auto;
+}
+Horizontal {
+    align: left bottom;
+}
+
 
