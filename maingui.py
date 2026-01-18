@@ -43,11 +43,12 @@ lines = [
 
 class TubeCompanion(App):
     CSS_PATH = "markdownconf.tcss"
+    ENABLE_COMMAND_PALETTE = False
 
 
     def compose(self) -> ComposeResult:
         self.theme = "tokyo-night"
-        yield Header()
+        yield Header(icon = (''), show_clock= True)
         with Horizontal(id="buttons"):
             yield Button("Line Statuses", id="linestuff_select")
             yield Button("Station Arrivals", id="stationstuff_select")
@@ -63,8 +64,7 @@ class TubeCompanion(App):
                                 type="text"
                                 )
                     yield Select.from_values(valid_lines, id="linesearch", type_to_search = True)
-                    yield Button("Search", id="submitsearch")
-        yield Footer()
+                    yield Button.success("Search", id="submitsearch")
 
 
     def on_mount(self) -> None:
