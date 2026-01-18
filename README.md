@@ -17,15 +17,21 @@ Textual. You can find the repository for it` [here](https://github.com/Textualiz
 </p>
 
 <h2>How to run</h2>
+
 `This assumes that you already have python installed on your system.`
+
 `If not you can get the latest version` [here](https://www.python.org/downloads/)
-<p>1) Extract the zip and open a command prompt in the folder.</p>
-<p>2) Install the required libraries.</p>
+<p><b>1)</b> Extract the zip and open a command prompt in the folder.</p>
+<p><b>2)</b> Install the required libraries.</p>
 
 `py -m pip install -r requirements.txt` OR `pip install -r requirements.txt`
 
-<p>3) <b>OPTIONAL</b>: Add your TFL API key to 'config.py'</p>
-<p>4) Run 'maingui.py'</p>
+<p><b>3) OPTIONAL</b>: Add your personal TFL API key to 'config.py'</p>
+<p><b>4)</b> Run ↓
+  
+  `'maingui.py'`
+  
+</p>
 
 
 <h2>To-Do</h2>
