@@ -36,6 +36,6 @@ Textual. You can find the repository for it` [here](https://github.com/Textualiz
 
 <h2>To-Do</h2>
 <p>- Allow the line statuses to refresh after a certain time</p>
-<p>- Add station searching to find arrivals/departures</p>
+<p>- Remove line options based on currently searched station</p>
 <p>- Serve online???</p>
 <p>- Theming</p>
